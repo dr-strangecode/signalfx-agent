@@ -10,7 +10,7 @@ def verify(agent, metrics, timeout=util.DEFAULT_TIMEOUT):
 
 def verify_included_metrics(config, metadata, timeout=util.DEFAULT_TIMEOUT):
     with Agent.run(config) as agent:
-        verify(agent, metadata.included_metrics, timeout=timeout)
+        verify(agent, metadata, timeout=timeout)
 
 
 def verify_all_metrics(config, metadata, timeout=util.DEFAULT_TIMEOUT):

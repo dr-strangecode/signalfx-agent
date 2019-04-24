@@ -3,6 +3,11 @@ monitors:
   doc: |
     Tracks free disk space on the host.
   metricsExhaustive: true
+  groups:
+  - name: ReportInodes
+    description: Inodes metrics
+  - name: ValuesPercentage
+    description: Percent based metrics
   metrics:
   - description: Free disk space in bytes
     included: true
@@ -20,37 +25,46 @@ monitors:
     included: false
     name: df_inodes.free
     type: gauge
+    group: ReportInodes
   - description: Number of inodes reserved for the super user.
     included: false
     name: df_inodes.reserved
     type: gauge
+    group: ReportInodes
   - description: Number of inodes that are used.
     included: false
     name: df_inodes.used
     type: gauge
+    group: ReportInodes
   - description: Free disk space on the file system, expressed as a percentage.
     included: false
     name: percent_bytes.free
     type: gauge
+    group: ValuesPercentage
   - description: Reserved disk space on the filesystem, expressed as a percentage.
     included: false
     name: percent_bytes.reserved
     type: gauge
+    group: ValuesPercentage
   - description: Used disk space on the file system, expressed as a percentage.
     included: false
     name: percent_bytes.used
     type: gauge
+    group: ValuesPercentage
   - description: Free inodes on the file system, expressed as a percentage.
     included: false
     name: percent_inodes.free
     type: gauge
+    group: ValuesPercentage
   - description: Reserved inodes on the file system, expressed as a percentage.
     included: false
     name: percent_inodes.reserved
     type: gauge
+    group: ValuesPercentage
   - description: Used inodes on the file system, expressed as a percentage.
     included: false
     name: percent_inodes.used
     type: gauge
+    group: ValuesPercentage
   monitorType: collectd/df
   properties: null
