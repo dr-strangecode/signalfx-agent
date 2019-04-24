@@ -44,16 +44,8 @@ func monitorsStructMetadata() []monitorDoc {
 
 				mc, _ := t.FieldByName("MonitorConfig")
 				mmd := monitorDoc{
-					Config: getStructMetadata(t),
-					MonitorMetadata: monitors.MonitorMetadata{
-						SendAll:     monitor.SendAll,
-						MonitorType: monType,
-						Dimensions:  monitor.Dimensions,
-						Groups:      monitor.Groups,
-						Metrics:     monitor.Metrics,
-						Properties:  monitor.Properties,
-						Doc:         monitor.Doc,
-					},
+					Config:           getStructMetadata(t),
+					MonitorMetadata:  monitor,
 					AcceptsEndpoints: mc.Tag.Get("acceptsEndpoints") == strconv.FormatBool(true),
 					SingleInstance:   mc.Tag.Get("singleInstance") == strconv.FormatBool(true),
 				}

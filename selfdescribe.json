@@ -19654,7 +19654,7 @@
     },
     {
       "monitorType": "openshift-cluster",
-      "sendAll": true,
+      "sendAll": false,
       "dimensions": [
         {
           "name": "metric_source",
@@ -19664,6 +19664,244 @@
       "doc": "Collects cluster-level metrics from the\nKubernetes API server.  It uses the _watch_ functionality of the K8s API\nto listen for updates about the cluster and maintains a cache of metrics\nthat get sent on a regular interval.\n\nSince the agent is generally running in multiple places in a K8s cluster and\nsince it is generally more convenient to share the same configuration across\nall agent instances, this monitor by default makes use of a leader election\nprocess to ensure that it is the only agent sending metrics in a cluster.\nAll of the agents running in the same namespace that have this monitor\nconfigured will decide amongst themselves which should send metrics for this\nmonitor, and the rest will stand by ready to activate if the leader agent\ndies.  You can override leader election by setting the config option\n`alwaysClusterReporter` to true, which will make the monitor always report\nmetrics.\n\nThis monitor is similar to\n[kube-state-metrics](https://github.com/kubernetes/kube-state-metrics), and\nsends many of the same metrics, but in a way that is less verbose and better\nfitted for the SignalFx backend.\n",
       "groups": null,
       "metrics": [
+        {
+          "name": "kubernetes.container_ready",
+          "type": "gauge",
+          "description": "Whether a container has passed its readiness probe (0 for no, 1 for yes)",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.container_restart_count",
+          "type": "gauge",
+          "description": "How many times the container has restarted in the recent past.  This value is pulled directly from [the K8s API](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#containerstatus-v1-core) and the value can go indefinitely high and be reset to 0 at any time depending on how your [kubelet is configured to prune dead containers](https://kubernetes.io/docs/concepts/cluster-administration/kubelet-garbage-collection/). It is best to not depend too much on the exact value but rather look at it as either `== 0`, in which case you can conclude there were no restarts in the recent past, or `\u003e 0`, in which case you can conclude there were restarts in the recent past, and not try and analyze the value beyond that.",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.daemon_set.current_scheduled",
+          "type": "gauge",
+          "description": "The number of nodes that are running at least 1 daemon pod and are supposed to run the daemon pod",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.daemon_set.desired_scheduled",
+          "type": "gauge",
+          "description": "The total number of nodes that should be running the daemon pod (including nodes currently running the daemon pod)",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.daemon_set.misscheduled",
+          "type": "gauge",
+          "description": "The number of nodes that are running the daemon pod, but are not supposed to run the daemon pod",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.daemon_set.ready",
+          "type": "gauge",
+          "description": "The number of nodes that should be running the daemon pod and have one or more of the daemon pod running and ready",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.deployment.available",
+          "type": "gauge",
+          "description": "Total number of available pods (ready for at least minReadySeconds) targeted by this deployment.",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.deployment.desired",
+          "type": "gauge",
+          "description": "Number of desired pods in this deployment",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.namespace_phase",
+          "type": "gauge",
+          "description": "The current phase of namespaces (`1` for _active_ and `0` for _terminating_)",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.node_ready",
+          "type": "gauge",
+          "description": "Whether this node is ready (1), not ready (0) or in an unknown state (-1)",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.pod_phase",
+          "type": "gauge",
+          "description": "Current phase of the pod (1 - Pending, 2 - Running, 3 - Succeeded, 4 - Failed, 5 - Unknown)",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.replica_set.available",
+          "type": "gauge",
+          "description": "Total number of available pods (ready for at least minReadySeconds) targeted by this replica set",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.replica_set.desired",
+          "type": "gauge",
+          "description": "Number of desired pods in this replica set",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.replication_controller.available",
+          "type": "gauge",
+          "description": "Total number of available pods (ready for at least minReadySeconds) targeted by this replication controller.",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.replication_controller.desired",
+          "type": "gauge",
+          "description": "Number of desired pods",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.resource_quota_hard",
+          "type": "gauge",
+          "description": "The upper limit for a particular resource in a specific namespace.  Will only be sent if a quota is specified.  CPU requests/limits will be sent as millicores.",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.resource_quota_used",
+          "type": "gauge",
+          "description": "The usage for a particular resource in a specific namespace.  Will only be sent if a quota is specified.  CPU requests/limits will be sent as millicores.",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.container_ready",
+          "type": "gauge",
+          "description": "Whether a container has passed its readiness probe (0 for no, 1 for yes)",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.container_restart_count",
+          "type": "gauge",
+          "description": "How many times the container has restarted in the recent past.  This value is pulled directly from [the K8s API](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#containerstatus-v1-core) and the value can go indefinitely high and be reset to 0 at any time depending on how your [kubelet is configured to prune dead containers](https://kubernetes.io/docs/concepts/cluster-administration/kubelet-garbage-collection/). It is best to not depend too much on the exact value but rather look at it as either `== 0`, in which case you can conclude there were no restarts in the recent past, or `\u003e 0`, in which case you can conclude there were restarts in the recent past, and not try and analyze the value beyond that.",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.daemon_set.current_scheduled",
+          "type": "gauge",
+          "description": "The number of nodes that are running at least 1 daemon pod and are supposed to run the daemon pod",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.daemon_set.desired_scheduled",
+          "type": "gauge",
+          "description": "The total number of nodes that should be running the daemon pod (including nodes currently running the daemon pod)",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.daemon_set.misscheduled",
+          "type": "gauge",
+          "description": "The number of nodes that are running the daemon pod, but are not supposed to run the daemon pod",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.daemon_set.ready",
+          "type": "gauge",
+          "description": "The number of nodes that should be running the daemon pod and have one or more of the daemon pod running and ready",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.deployment.available",
+          "type": "gauge",
+          "description": "Total number of available pods (ready for at least minReadySeconds) targeted by this deployment.",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.deployment.desired",
+          "type": "gauge",
+          "description": "Number of desired pods in this deployment",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.namespace_phase",
+          "type": "gauge",
+          "description": "The current phase of namespaces (`1` for _active_ and `0` for _terminating_)",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.node_ready",
+          "type": "gauge",
+          "description": "Whether this node is ready (1), not ready (0) or in an unknown state (-1)",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.pod_phase",
+          "type": "gauge",
+          "description": "Current phase of the pod (1 - Pending, 2 - Running, 3 - Succeeded, 4 - Failed, 5 - Unknown)",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.replica_set.available",
+          "type": "gauge",
+          "description": "Total number of available pods (ready for at least minReadySeconds) targeted by this replica set",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.replica_set.desired",
+          "type": "gauge",
+          "description": "Number of desired pods in this replica set",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.replication_controller.available",
+          "type": "gauge",
+          "description": "Total number of available pods (ready for at least minReadySeconds) targeted by this replication controller.",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.replication_controller.desired",
+          "type": "gauge",
+          "description": "Number of desired pods",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.resource_quota_hard",
+          "type": "gauge",
+          "description": "The upper limit for a particular resource in a specific namespace.  Will only be sent if a quota is specified.  CPU requests/limits will be sent as millicores.",
+          "group": null,
+          "included": true
+        },
+        {
+          "name": "kubernetes.resource_quota_used",
+          "type": "gauge",
+          "description": "The usage for a particular resource in a specific namespace.  Will only be sent if a quota is specified.  CPU requests/limits will be sent as millicores.",
+          "group": null,
+          "included": true
+        },
         {
           "name": "openshift.clusterquota.cpu.hard",
           "type": "gauge",

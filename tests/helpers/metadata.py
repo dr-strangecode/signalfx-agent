@@ -1,3 +1,5 @@
+import itertools
+
 import yaml
 
 from tests.paths import REPO_ROOT_DIR
@@ -20,6 +22,11 @@ class Metadata:
         ) as fd:
             doc = yaml.safe_load(fd)
             monitor = _find_monitor(doc["monitors"], mon_type)
+            metrics = monitor["metrics"]
+            if isinstance(metrics, dict):
+                # Flatten metric lists.
+                metrics = list(itertools.chain(*metrics.values()))
+            monitor["metrics"] = metrics
 
             return cls(
                 monitor_type=monitor["monitorType"],
