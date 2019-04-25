@@ -2,9 +2,8 @@ import os
 from contextlib import contextmanager
 from pathlib import Path
 
-import yaml
-
 import tests.helpers.kubernetes.utils as k8s
+import yaml
 from tests import paths
 from tests.helpers.util import ensure_always, get_unique_localhost
 
@@ -16,7 +15,7 @@ AGENT_CLUSTERROLEBINDING_PATH = Path(
 AGENT_CONFIGMAP_PATH = Path(os.environ.get("AGENT_CONFIGMAP_PATH", AGENT_YAMLS_DIR / "configmap.yaml"))
 AGENT_DAEMONSET_PATH = Path(os.environ.get("AGENT_DAEMONSET_PATH", AGENT_YAMLS_DIR / "daemonset.yaml"))
 AGENT_SERVICEACCOUNT_PATH = Path(os.environ.get("AGENT_SERVICEACCOUNT_PATH", AGENT_YAMLS_DIR / "serviceaccount.yaml"))
-AGENT_STATUS_COMMAND = ["/bin/sh", "-c", "agent-status"]
+AGENT_STATUS_COMMAND = ["/bin/sh", "-c", "agent-status", "all"]
 
 
 class Agent:  # pylint: disable=too-many-instance-attributes
