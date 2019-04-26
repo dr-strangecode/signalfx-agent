@@ -55,16 +55,13 @@ monitors:
     included: false
     name: percent_inodes.free
     type: gauge
-    group: ValuesPercentage
   - description: Reserved inodes on the file system, expressed as a percentage.
     included: false
     name: percent_inodes.reserved
     type: gauge
-    group: ValuesPercentage
   - description: Used inodes on the file system, expressed as a percentage.
     included: false
     name: percent_inodes.used
     type: gauge
-    group: ValuesPercentage
   monitorType: collectd/df
   properties: null
