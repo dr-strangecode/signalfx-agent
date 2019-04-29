@@ -11,60 +11,63 @@ This monitor collects cluster level and index level stats only from the current 
 in an Elasticsearch cluster by default. It is possible to override this with the
 `clusterHealthStatsMasterOnly` and `indexStatsMasterOnly` config options respectively.
 
-A simple configuration that collects only default metrics looks like the following
+A simple configuration that collects only default, included metrics looks like the following:
 
-```
+```yaml
 monitors:
 - type: elasticsearch
- host: localhost
- port: 9200
+  host: localhost
+  port: 9200
 ```
 
-By default thread pool stats from "search" and "index" thread pools are collected. To collect
-stats from other thread pools follow the below pattern.
+By default thread pool stats from the "search" and "index" thread pools are collected. To collect
+stats from other thread pools specify the `threadPools` config option:
 
-```
+```yaml
 monitors:
 - type: elasticsearch
- host: localhost
- port: 9200
- threadPools:
-	- bulk
-	- warmer
-	- listener
+  host: localhost
+  port: 9200
+  threadPools:
+ 	- bulk
+ 	- warmer
+ 	- listener
 ```
-The monitor collects a subset of node stats of JVM, process, HTTP, transport, indices and thread
-pool stats. It is possible to enable enhanced stats for each group separately. Here's an example:
 
-```
+The monitor collects a subset of node stats of JVM, process, HTTP, transport,
+indices and thread pool stats. It is possible to enable enhanced stats for each
+stat group separately. Here's an example:
+
+```yaml
 monitors:
 - type: elasticsearch
- host: localhost
- port: 9200
- enableEnhancedHTTPStats: true
- enableEnhancedJVMStats: true
- enableEnhancedProcessStats: true
- enableEnhancedThreadPoolStats: true
- enableEnhancedTransportStats: true
- enableEnhancedNodeIndicesStats:
-	- indexing
-	- warmer
- - get
+  host: localhost
+  port: 9200
+  enableEnhancedHTTPStats: true
+  enableEnhancedJVMStats: true
+  enableEnhancedProcessStats: true
+  enableEnhancedThreadPoolStats: true
+  enableEnhancedTransportStats: true
+  enableEnhancedNodeIndicesStats:
+ 	- indexing
+ 	- warmer
+  - get
 ```
 
-The `enableEnhancedNodeIndicesStats` option takes a list of index stats groups for which enhanced
-stats will be collected. A comprehensive list of all available such groups can be found
-[here] (https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-stats.html#node-indices-stats).
+The `enableEnhancedNodeIndicesStats` option takes a list of index stats groups
+for which enhanced stats will be collected. A comprehensive list of all
+such available groups can be found [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-stats.html#node-indices-stats).
 
-Note that the `enableEnhancedIndexStatsForIndexGroups` is similar to `enableEnhancedNodeIndicesStats`,
-but for index level stats
+Note that the `enableEnhancedIndexStatsForIndexGroups` is similar to
+`enableEnhancedNodeIndicesStats`, but for index level stats.
 
-By default the monitor collects a subset of index stats of total aggregation type (see docs for details).
-It is possible to enable index stats of primaries aggregation type too. Total for an index stat
-aggregates across all shards. Whereas, Primaries only reflect the stats from primary shards. An example
-configuration to enable index stats from Primary shards too
+By default the monitor collects a subset of index stats of total aggregation
+type (see docs for details). It is possible to enable index stats of primaries
+aggregation type too. Total for an index stat aggregates across all shards.
+Whereas, Primaries only reflect the stats from primary shards. An example
+configuration to enable index stats from Primary shards too:
 
-```
+```yaml
 monitors:
 - type: elasticsearch
  host: localhost
@@ -72,15 +75,19 @@ monitors:
  enableIndexStatsPrimaries: true
 ```
 
-It is possible to collect index level stats that are aggregated across all indexes, rather than one a per index level
+It is possible to collect index level stats that are aggregated across all indexes, rather than one a per index level:
 
 ```
 monitors:
 - type: elasticsearch
- host: localhost
- port: 9200
- IndexSummaryOnly: true
+  host: localhost
+  port: 9200
+  indexSummaryOnly: true
 ```
+
+For more information on the built-in content we have for Elasticsearch,
+[see
+here](https://github.com/signalfx/integrations/tree/master/elasticsearch)
 
 
 Monitor Type: `elasticsearch`
